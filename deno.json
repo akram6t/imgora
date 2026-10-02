@@ -1,0 +1,11 @@
+{
+  "nodeModulesDir": "none",
+  "tasks": {
+    "dev": "deno run --allow-net --allow-env --allow-sys --no-check src/deno.ts"
+  },
+  "imports": {
+    "hono": "npm:hono@4.13.12",
+    "hono/": "npm:hono@4.13.12/",
+    "@aws-sdk/client-s3": "npm:@aws-sdk/client-s3"
+  }
+}

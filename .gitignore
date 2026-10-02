@@ -1,0 +1,11 @@
+node_modules/
+data/
+data-*/
+dist/
+.wrangler/
+samples/
+.env
+server*.log
+*.log
+.DS_Store
+.dev.vars

@@ -1,0 +1,20 @@
+name = "imgora"
+main = "src/index.ts"
+compatibility_date = "2025-09-01"
+# lets the bundler resolve node builtins referenced by adapters (S3 SDK, quota)
+compatibility_flags = ["nodejs_compat"]
+
+rules = [
+  { type = "CompiledWasm", globs = ["**/*.wasm"], fallthrough = true }
+]
+
+# Non-secret configuration — secrets (AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY)
+# are set with:  npx wrangler secret put AWS_ACCESS_KEY_ID
+#                npx wrangler secret put AWS_SECRET_ACCESS_KEY
+[vars]
+S3_BUCKET = "imgora"
+S3_REGION = "auto"
+S3_ENDPOINT = "https://t3.storage.dev"
+DAILY_TRANSFORM_LIMIT = "100"
+
+# Local dev (wrangler dev) reads the same values from .dev.vars
