@@ -5,6 +5,7 @@
  * statically and passed to its `init()` — the officially recommended
  * jSquash + Workers pattern.
  */
+/// <reference path="../wasm.d.ts" />
 import jpegDecode, { init as initJpegDec } from "@jsquash/jpeg/decode";
 import jpegEncode, { init as initJpegEnc } from "@jsquash/jpeg/encode";
 import pngDecode, { init as initPngDec } from "@jsquash/png/decode";

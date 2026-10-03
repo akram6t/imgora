@@ -254,7 +254,9 @@ app.use("/upload", cors());
 app.use("/images", cors());
 app.use("/images/*", cors());
 
-const IMMU = "public, max-age=31536000, immutable";
+// s-maxage lets serverless CDNs (Vercel edge) cache transform URLs; the
+// canonical query string is deterministic, so URL-keyed caching is safe.
+const IMMU = "public, max-age=31536000, s-maxage=31536000, immutable";
 
 /* ---------- daily transform quota (self-hosted tier) ---------- */
 
@@ -512,12 +514,18 @@ app.get("/t/:id", async (c) => {
   const data = await getData(rt, id);
   if (!data) return err(c, 404, "Image not found");
 
-  // WASM decode memory guard — very large images need the Node runtime
-  if (isWorkers && meta.width && meta.height && meta.width * meta.height > 30_000_000) {
+  // Memory guard for constrained runtimes: Workers WASM and ~1GB serverless
+  // lambdas (Vercel). Self-hosted Node with sharp handles much larger images.
+  if (
+    (isWorkers || !!process.env.VERCEL) &&
+    meta.width &&
+    meta.height &&
+    meta.width * meta.height > 30_000_000
+  ) {
     return err(
       c,
       413,
-      `Image is ~${Math.round((meta.width * meta.height) / 1e6)}MP — too large to transform on Workers. Use ?orig=1 for the original or the Node runtime.`,
+      `Image is ~${Math.round((meta.width * meta.height) / 1e6)}MP — too large to transform on serverless. Use ?orig=1 for the original or the self-hosted Node runtime.`,
     );
   }
 

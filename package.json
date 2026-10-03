@@ -2,13 +2,13 @@
   "name": "imgora",
   "version": "1.0.0",
   "description": "Imgora — Cloudinary-style on-the-fly image processing built with Hono. Local dev with sharp, production on S3, deploys to Cloudflare Workers with WASM codecs",
-  "type": "module",
   "scripts": {
     "dev": "tsx watch src/node.ts",
     "start": "tsx src/node.ts",
     "dev:cf": "wrangler dev",
     "deploy": "wrangler deploy",
     "typecheck": "tsc --noEmit",
+    "build:vercel": "node scripts/vercel-bundle.mjs",
     "og": "node scripts/make-og.mjs",
     "dev:deno": "deno run --allow-net --allow-env --allow-sys --no-check src/deno.ts"
   },
@@ -27,8 +27,9 @@
   },
   "devDependencies": {
     "@types/node": "^26.6.3",
+    "esbuild": "^0.28.2",
     "tsx": "^4.23.15",
-    "typescript": "^7.0.2",
+    "typescript": "^5.9.3",
     "wrangler": "^4.86.0"
   }
 }
